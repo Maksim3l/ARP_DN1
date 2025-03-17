@@ -6,6 +6,7 @@
 
 using namespace std;
 
+void binaryRadixSort(vector<int>& arr);
 bool Branje_Stevil(vector<int>& vec, const char s[]);
 void Izpis_Stevil(int* polje, unsigned int velikost);
 
@@ -23,6 +24,8 @@ int main(int argc, char* argv[]) {
         cerr << "Napaka pri branju stevil iz datoteke." << endl << endl;
         return 1;
     }
+
+    binaryRadixSort(Arr);
 
     // ven
     Izpis_Stevil(&Arr[0], Arr.size());
@@ -51,4 +54,9 @@ void Izpis_Stevil(int* polje, unsigned int velikost) {
 
     for (int i = 0; i < velikost; i++)
         output << polje[i] << ' ';
+}
+
+void binaryRadixSort(vector<int>& arr) {
+    if (arr.empty()) return;
+
 }
