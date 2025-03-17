@@ -107,55 +107,47 @@ void binaryRadixSort(vector<unsigned char>& arr) {
     // Od polja vhodnih števil A vzemite od vsakega števila k-ti bit (k je na
     // začetku 0).Tako dobite polje bitov D
 
-    
-
     // Dostop do k - tega bita števila A[i]:
     // bool bit = (A[i] >> k) & 1;
 
     vector<unsigned char> helperC(arr.size(), 0);
 
     for (int k = 0; k < 7; k++) {
-        for (int i = 0; i < arr.size() - 1; i++) {
+        for (int i = 0; i < arr.size(); i++) {
             helperC[i] = (arr[i] >> k) & 1;
-            cout << ((arr[i] >> k) & 1) << "\n";
         }
 
-        cout << "______\n";
+        for (int i = 0; i < arr.size(); i++) {
+            cout << (helperC[i] & 1) << " " << arr[i] << "\n";
+        }
 
+        cout << "--------------------\n";
+
+        // Bite (polje D) sortirajte s stabilnim algoritmom za sortiranje
+        // (najboljše counting sort)
         countingSort( helperC, k);
 
-        vector<unsigned char> temp = arr;
-        for (int i = 0; i < arr.size()-1; i++) {
-            arr[i] = temp[helperC[i]];
+        for (int i = 0; i < arr.size(); i++) {
+            cout << (helperC[i] & 1) << " " << arr[i] << "\n";
         }
 
-        cout << "______\n";
+        cout << "--------------------\n";
+
+
+        // Glede na indekse sortiranih bitov popravite vrstni red števil
+        // v A(tako velja i == j, za A[i] in D[j]).
+        /*std::vector<unsigned char> B(arr.size());
+        B = arr;
+
+        for (int i = 0; i < helperC.size(); i++) {
+            arr[i] = B[helperC[i]];
+        }*/
+
+        // Indeks k inkrementirate in se vrnete na prvi korak.Postopek
+        // ponovite še 7 - krat saj sortiramo 8 - bitna števila.
+        // k = 1
+
     }
-    
-    
-
-    // Bite (polje D) sortirajte s stabilnim algoritmom za sortiranje
-    // (najboljše counting sort)
-
-    // Glede na indekse sortiranih bitov popravite vrstni red števil
-    // v A(tako velja i == j, za A[i] in D[j]).
-
-    // Indeks k inkrementirate in se vrnete na prvi korak.Postopek
-    // ponovite še 7 - krat saj sortiramo 8 - bitna števila.
-    // k = 1
-
-
-    /*
-    1. Od polja vhodnih števil A vzamite od vsakega števila k-ti bit (k je na začetku 0). Tako
-        dobite polje bitov D.
-    2. Bite (polje D) sortirajte s stabilnim algoritmom za sortiranje (najboljše counting
-        sort).
-    3. Glede na indekse sortiranih bitov popravite vrstni red števil v A (tako velja i == j,
-        za A[i] in D[j]).
-    4. Indeks k inkrementirate in se vrnete na prvi korak. Postopek ponovite še 7-krat saj
-        sortiramo 8-bitna števila
-    */
-
 }
 /*
 
