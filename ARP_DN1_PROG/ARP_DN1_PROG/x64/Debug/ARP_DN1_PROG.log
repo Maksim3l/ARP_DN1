@@ -1,0 +1,4 @@
+﻿  ARP_DN1_PROG.cpp
+C:\Users\lokna\OneDrive\Namizje\Uni\2_letnik_2_semester\ARP\DN01\ARP_DN1\ARP_DN1_PROG\ARP_DN1_PROG\ARP_DN1_PROG.cpp(28,35): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\lokna\OneDrive\Namizje\Uni\2_letnik_2_semester\ARP\DN01\ARP_DN1\ARP_DN1_PROG\ARP_DN1_PROG\ARP_DN1_PROG.cpp(52,23): warning C4018: '<': signed/unsigned mismatch
+  ARP_DN1_PROG.vcxproj -> C:\Users\lokna\OneDrive\Namizje\Uni\2_letnik_2_semester\ARP\DN01\ARP_DN1\ARP_DN1_PROG\x64\Debug\ARP_DN1_PROG.exe

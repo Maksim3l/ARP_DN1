@@ -12,6 +12,12 @@ void Izpis_Stevil(int* polje, unsigned int velikost);
 int main(int argc, char* argv[]) {
     vector<int> Arr;
 
+    // Error handling
+    if (argc != 2) {
+        cerr << endl << "Uporaba: " << argv[0] << endl << "- <vhodna datoteka>" << endl << endl;
+        return 1;
+    }
+
     // pridobi številke
     if (!Branje_Stevil(Arr, argv[2])) {
         cerr << "Napaka pri branju stevil iz datoteke." << endl << endl;
