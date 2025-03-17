@@ -1,20 +1,48 @@
-// ARP_DN1_PROG.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <sstream>
+#include <algorithm>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+using namespace std;
+
+bool Branje_Stevil(vector<int>& vec, const char s[]);
+void Izpis_Stevil(int* polje, unsigned int velikost);
+
+int main(int argc, char* argv[]) {
+    vector<int> Arr;
+
+    // pridobi številke
+    if (!Branje_Stevil(Arr, argv[2])) {
+        cerr << "Napaka pri branju stevil iz datoteke." << endl << endl;
+        return 1;
+    }
+
+    // ven
+    Izpis_Stevil(&Arr[0], Arr.size());
+    return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+bool Branje_Stevil(vector<int>& vec, const char s[]) {
+    ifstream input(s);
+    int st;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+    if (!input.is_open()) {
+        return false;
+    }
+
+    while (!input.eof()) {
+        input >> st;
+        vec.push_back(st);
+        while (isspace(input.peek())) input.get();
+    }
+    input.close();
+    return true;
+}
+
+void Izpis_Stevil(int* polje, unsigned int velikost) {
+    ofstream output("out.txt");
+
+    for (int i = 0; i < velikost; i++)
+        output << polje[i] << ' ';
+}
