@@ -3,6 +3,7 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include <utility>
 
 using namespace std;
 
@@ -75,27 +76,29 @@ int getVecMax(vector<int>& vec) {
     return maxNum;
 }
 
-void countingSort(vector<int>& arr) {
-    if (arr.empty()) return;
+void countingSort(vector<unsigned char>& radixC, int bitPos) {
+    if (radixC.empty()) return;
 
-    int maxVecNum = getVecMax(arr);
-    vector<int> helperC(maxVecNum + 1, 0);
-    vector<int> sortedB(arr.size(), 0);
+    vector<int> helperC(2, 0);
+    vector<unsigned char> sortedB(radixC.size(), 0);
 
-    for (size_t i = 0; i < arr.size(); ++i) {
-        helperC[arr[i]] = helperC[arr[i]] + 1;
+    // 1. korak: za vsak A[i] velja C[(A[i] >> k) & 1]++
+    for (size_t i = 0; i < radixC.size(); ++i) {
+        helperC[(radixC[i] >> bitPos) & 1]++;
     }
 
-    for (size_t i = 1; i <= maxVecNum; ++i) {
-        helperC[i] = helperC[i] + helperC[i - 1];
+    // 2. korak(prefix sum) : C[1] += C[0]
+    helperC[1] += helperC[0];
+
+    // 3. korak : B[--C[(A[i] >> k) & 1]] = A[i]
+    for (int i = radixC.size() - 1; i >= 0; --i) {
+        sortedB[helperC[(radixC[i] >> bitPos) & 1] - 1] = radixC[i];
+        helperC[(radixC[i] >> bitPos) & 1]--;
     }
 
-    for (int i = arr.size() - 1; i >= 0; --i) {
-        sortedB[helperC[arr[i]] - 1] = arr[i];
-        helperC[arr[i]] = helperC[arr[i]] - 1;
-    }
-
-    arr = sortedB;
+    // 4. Imamo sortirano polje A po k - tem bitu v polju B.Zamenjamo
+    //  kazalca od polj : std::swap(A, B)
+    std::swap(radixC, sortedB);
 }
 
 void binaryRadixSort(vector<unsigned char>& arr) {
@@ -104,22 +107,33 @@ void binaryRadixSort(vector<unsigned char>& arr) {
     // Od polja vhodnih števil A vzemite od vsakega števila k-ti bit (k je na
     // začetku 0).Tako dobite polje bitov D
 
-    // 1. korak: za vsak A[i] velja C[(A[i] >> k) & 1]++
+    
 
     // Dostop do k - tega bita števila A[i]:
     // bool bit = (A[i] >> k) & 1;
 
     vector<unsigned char> helperC(arr.size(), 0);
 
-    for (int k = 0; k < 8; k++) {
+    for (int k = 0; k < 7; k++) {
         for (int i = 0; i < arr.size() - 1; i++) {
-            helperC[(arr[i] >> k) & 1]++;
-
+            helperC[i] = (arr[i] >> k) & 1;
             cout << ((arr[i] >> k) & 1) << "\n";
         }
+
+        cout << "______\n";
+
+        countingSort( helperC, k);
+
+        vector<unsigned char> temp = arr;
+        for (int i = 0; i < arr.size()-1; i++) {
+            arr[i] = temp[helperC[i]];
+        }
+
         cout << "______\n";
     }
-       
+    
+    
+
     // Bite (polje D) sortirajte s stabilnim algoritmom za sortiranje
     // (najboljše counting sort)
 
@@ -130,12 +144,6 @@ void binaryRadixSort(vector<unsigned char>& arr) {
     // ponovite še 7 - krat saj sortiramo 8 - bitna števila.
     // k = 1
 
-
-
-    // 2. korak(prefix sum) : C[1] += C[0]
-    // 3. korak : B[--C[(A[i] >> k) & 1]] = A[i]
-    // 4. Imamo sortirano polje A po k - tem bitu v polju B.Zamenjamo
-    //  kazalca od polj : std::swap(A, B)
 
     /*
     1. Od polja vhodnih števil A vzamite od vsakega števila k-ti bit (k je na začetku 0). Tako
