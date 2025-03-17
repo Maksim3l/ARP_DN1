@@ -6,6 +6,8 @@
 
 using namespace std;
 
+int getVecMax(vector<int>& vec);
+void countingSort(vector<int>& arr);
 void binaryRadixSort(vector<unsigned char>& arr);
 bool Branje_Stevil(vector<unsigned char>& vec, const char s[]);
 void Izpis_Stevil(unsigned char* polje, unsigned int velikost);
@@ -61,6 +63,41 @@ void Izpis_Stevil(unsigned char* polje, unsigned int velikost) {
         output << static_cast<int>(polje[i]) << ' ';
 }
 
+int getVecMax(vector<int>& vec) {
+    int maxNum = vec[0];
+
+    for (size_t i = 1; i < vec.size(); ++i) {
+        if (vec[i] > maxNum) {
+            maxNum = vec[i];
+        }
+    }
+
+    return maxNum;
+}
+
+void countingSort(vector<int>& arr) {
+    if (arr.empty()) return;
+
+    int maxVecNum = getVecMax(arr);
+    vector<int> helperC(maxVecNum + 1, 0);
+    vector<int> sortedB(arr.size(), 0);
+
+    for (size_t i = 0; i < arr.size(); ++i) {
+        helperC[arr[i]] = helperC[arr[i]] + 1;
+    }
+
+    for (size_t i = 1; i <= maxVecNum; ++i) {
+        helperC[i] = helperC[i] + helperC[i - 1];
+    }
+
+    for (int i = arr.size() - 1; i >= 0; --i) {
+        sortedB[helperC[arr[i]] - 1] = arr[i];
+        helperC[arr[i]] = helperC[arr[i]] - 1;
+    }
+
+    arr = sortedB;
+}
+
 void binaryRadixSort(vector<unsigned char>& arr) {
     if (arr.empty()) return;
 
@@ -80,7 +117,7 @@ void binaryRadixSort(vector<unsigned char>& arr) {
 
             cout << ((arr[i] >> k) & 1) << "\n";
         }
-        cout << "______";
+        cout << "______\n";
     }
        
     // Bite (polje D) sortirajte s stabilnim algoritmom za sortiranje
@@ -112,7 +149,6 @@ void binaryRadixSort(vector<unsigned char>& arr) {
     */
 
 }
-
 /*
 
 
