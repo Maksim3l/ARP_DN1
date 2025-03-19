@@ -69,6 +69,7 @@ void countingSort(vector<unsigned char>& arr, int bitPos) {
         helperC[(arr[i] >> bitPos) & 1]++;
     }
 
+    helperC[1] += helperC[0];
 
 }
 
