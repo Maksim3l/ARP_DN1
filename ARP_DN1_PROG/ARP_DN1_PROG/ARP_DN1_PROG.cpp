@@ -106,11 +106,5 @@ void binaryRadixSort(vector<unsigned char>& arr) {
 
     for (int k = 0; k < 8; k++) {
         countingSort( arr, k);
-
-        for (int i = 0; i < arr.size(); i++) {
-            cout << static_cast<int>(arr[i]) << "\n";
-        }
-
-        cout << "--------------------\n";
     }
 }
