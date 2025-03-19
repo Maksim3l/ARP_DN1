@@ -8,6 +8,7 @@
 using namespace std;
 
 bool Branje_Stevil(vector<unsigned char>& vec, const char s[]);
+void Izpis_Stevil(unsigned char* polje, unsigned int velikost);
 
 int main(int argc, char* argv[]) {
     vector<unsigned char> Arr;
@@ -24,7 +25,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-
+    Izpis_Stevil(&Arr[0], Arr.size());
         return 0;
 }
 
@@ -47,4 +48,11 @@ bool Branje_Stevil(vector<unsigned char>& vec, const char s[]) {
     }
     input.close();
     return true;
+}
+
+void Izpis_Stevil(unsigned char* polje, unsigned int velikost) {
+    ofstream output("out.txt");
+
+    for (int i = 0; i < velikost; i++)
+        output << static_cast<int>(polje[i]) << ' ';
 }
