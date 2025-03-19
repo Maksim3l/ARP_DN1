@@ -7,6 +7,7 @@
 
 using namespace std;
 
+void countingSort(vector<int>& arr);
 void binaryRadixSort(vector<unsigned char>& arr);
 bool Branje_Stevil(vector<unsigned char>& vec, const char s[]);
 void Izpis_Stevil(unsigned char* polje, unsigned int velikost);
@@ -58,6 +59,15 @@ void Izpis_Stevil(unsigned char* polje, unsigned int velikost) {
         output << static_cast<int>(polje[i]) << ' ';
 }
 
+void countingSort(vector<unsigned char>& arr, int bitPos) {
+    if (arr.empty()) return;
+
+}
+
 void binaryRadixSort(vector<unsigned char>& arr) {
     if (arr.empty()) return;
+
+    for (int k = 0; k < 8; k++) {
+        countingSort( arr, k);
+    }
 }
