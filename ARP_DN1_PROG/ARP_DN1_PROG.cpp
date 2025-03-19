@@ -16,6 +16,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    // pridobi številke
+    if (!Branje_Stevil(Arr, argv[1])) {
+        cerr << "Napaka pri branju stevil iz datoteke." << endl << endl;
+        return 1;
+    }
+
+
         return 0;
 }
 
