@@ -104,33 +104,13 @@ void countingSort(vector<unsigned char>& arr, int bitPos) {
 void binaryRadixSort(vector<unsigned char>& arr) {
     if (arr.empty()) return;
 
-    // Od polja vhodnih števil A vzemite od vsakega števila k-ti bit (k je na
-    // začetku 0).Tako dobite polje bitov D
-
-    // Dostop do k - tega bita števila A[i]:
-    // bool bit = (A[i] >> k) & 1;
-
-
     for (int k = 0; k < 8; k++) {
-
-        // Bite (polje D) sortirajte s stabilnim algoritmom za sortiranje
-        // (najboljše counting sort)
         countingSort( arr, k);
 
-        // Glede na indekse sortiranih bitov popravite vrstni red števil
-        // v A(tako velja i == j, za A[i] in D[j]).
-        /*std::vector<unsigned char> B(arr.size());
-        B = arr;
+        for (int i = 0; i < arr.size(); i++) {
+            cout << static_cast<int>(arr[i]) << "\n";
+        }
 
-        for (int i = 0; i < helperC.size(); i++) {
-            arr[i] = B[helperC[i]];
-        }*/
-
-        //bitna vrednost a in k na b-tem mestu zamenjamo
-
-        // Indeks k inkrementirate in se vrnete na prvi korak.Postopek
-        // ponovite še 7 - krat saj sortiramo 8 - bitna števila.
-        // k = 1
-
+        cout << "--------------------\n";
     }
 }
