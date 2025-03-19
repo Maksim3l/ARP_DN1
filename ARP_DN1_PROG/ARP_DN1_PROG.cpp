@@ -10,6 +10,8 @@ using namespace std;
 bool Branje_Stevil(vector<unsigned char>& vec, const char s[]);
 
 int main(int argc, char* argv[]) {
+    vector<unsigned char> Arr;
+
     // Error handling
     if (argc != 2) {
         cerr << endl << "Uporaba: " << argv[0] << endl << "- <vhodna datoteka>" << endl << endl;
