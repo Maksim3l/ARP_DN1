@@ -62,6 +62,9 @@ void Izpis_Stevil(unsigned char* polje, unsigned int velikost) {
 void countingSort(vector<unsigned char>& arr, int bitPos) {
     if (arr.empty()) return;
 
+    vector<int> helperC(2, 0);
+    vector<unsigned char> sortedB(arr.size(), 0);
+
 }
 
 void binaryRadixSort(vector<unsigned char>& arr) {
