@@ -7,7 +7,6 @@
 
 using namespace std;
 
-int getVecMax(vector<int>& vec);
 void countingSort(vector<int>& arr);
 void binaryRadixSort(vector<unsigned char>& arr);
 bool Branje_Stevil(vector<unsigned char>& vec, const char s[]);
@@ -64,40 +63,23 @@ void Izpis_Stevil(unsigned char* polje, unsigned int velikost) {
         output << static_cast<int>(polje[i]) << ' ';
 }
 
-int getVecMax(vector<int>& vec) {
-    int maxNum = vec[0];
-
-    for (size_t i = 1; i < vec.size(); ++i) {
-        if (vec[i] > maxNum) {
-            maxNum = vec[i];
-        }
-    }
-
-    return maxNum;
-}
-
 void countingSort(vector<unsigned char>& arr, int bitPos) {
     if (arr.empty()) return;
 
     vector<int> helperC(2, 0);
     vector<unsigned char> sortedB(arr.size(), 0);
 
-    // 1. korak: za vsak A[i] velja C[(A[i] >> k) & 1]++
     for (size_t i = 0; i < arr.size(); ++i) {
         helperC[(arr[i] >> bitPos) & 1]++;
     }
 
-    // 2. korak(prefix sum) : C[1] += C[0]
     helperC[1] += helperC[0];
 
-    // 3. korak : B[--C[(A[i] >> k) & 1]] = A[i]
     for (int i = arr.size() - 1; i >= 0; --i) {
         sortedB[helperC[(arr[i] >> bitPos) & 1] - 1] = arr[i];
         helperC[(arr[i] >> bitPos) & 1]--;
     }
 
-    // 4. Imamo sortirano polje A po k - tem bitu v polju B.Zamenjamo
-    //  kazalca od polj : std::swap(A, B)
     std::swap(arr, sortedB);
 }
 
