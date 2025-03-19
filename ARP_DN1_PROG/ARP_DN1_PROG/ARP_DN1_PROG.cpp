@@ -117,13 +117,6 @@ void binaryRadixSort(vector<unsigned char>& arr) {
         // (najboljše counting sort)
         countingSort( arr, k);
 
-        for (int i = 0; i < arr.size(); i++) {
-            cout << static_cast<int>(arr[i]) << "\n";
-        }
-
-        cout << "--------------------\n";
-
-
         // Glede na indekse sortiranih bitov popravite vrstni red števil
         // v A(tako velja i == j, za A[i] in D[j]).
         /*std::vector<unsigned char> B(arr.size());
