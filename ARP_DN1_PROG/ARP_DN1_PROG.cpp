@@ -76,6 +76,8 @@ void countingSort(vector<unsigned char>& arr, int bitPos) {
         helperC[(arr[i] >> bitPos) & 1]--;
     }
 
+    std::swap(arr, sortedB);
+
 }
 
 void binaryRadixSort(vector<unsigned char>& arr) {
