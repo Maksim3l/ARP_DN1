@@ -65,6 +65,11 @@ void countingSort(vector<unsigned char>& arr, int bitPos) {
     vector<int> helperC(2, 0);
     vector<unsigned char> sortedB(arr.size(), 0);
 
+    for (size_t i = 0; i < arr.size(); ++i) {
+        helperC[(arr[i] >> bitPos) & 1]++;
+    }
+
+
 }
 
 void binaryRadixSort(vector<unsigned char>& arr) {
