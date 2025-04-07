@@ -1,1 +1,48 @@
+name: C++ CI
 
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up GCC
+      run: sudo apt-get install -y g++
+
+    - name: Build
+      run: g++ -o test Vaja2_KMP.cpp
+
+    - name: Run Tests
+      run: |
+        echo "Running tests and collecting outputs..."
+        ./test 0 'IIIII' primer_besedilo.txt
+        cat out.txt >> tests.txt
+        echo "" >> tests.txt
+
+        ./test 1 'IIIII' primer_besedilo.txt
+        cat out.txt >> tests.txt
+        echo "" >> tests.txt
+
+        ./test 0 'III' primer_besedilo.txt
+        cat out.txt >> tests.txt
+        echo "" >> tests.txt
+
+        ./test 1 'III' primer_besedilo.txt
+        cat out.txt >> tests.txt
+        echo "" >> tests.txt
+
+        ./test 0 'lorem ipsum' primer_besedilo.txt
+        cat out.txt >> tests.txt
+        echo "" >> tests.txt
+
+        ./test 1 'lorem ipsum' primer_besedilo.txt
+        cat out.txt >> tests.txt
+
+    - name: Upload Tests Output
+      uses: actions/upload-artifact@v2
+      with:
+        name: tests-output
+        path: tests.txt
