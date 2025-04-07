@@ -18,28 +18,9 @@ jobs:
     - name: Run Tests
       run: |
         echo "Running tests and collecting outputs..."
-        ./test 0 'IIIII' primer_besedilo.txt
+        ./test primer_besedilo.txt
         cat out.txt >> tests.txt
         echo "" >> tests.txt
-
-        ./test 1 'IIIII' primer_besedilo.txt
-        cat out.txt >> tests.txt
-        echo "" >> tests.txt
-
-        ./test 0 'III' primer_besedilo.txt
-        cat out.txt >> tests.txt
-        echo "" >> tests.txt
-
-        ./test 1 'III' primer_besedilo.txt
-        cat out.txt >> tests.txt
-        echo "" >> tests.txt
-
-        ./test 0 'lorem ipsum' primer_besedilo.txt
-        cat out.txt >> tests.txt
-        echo "" >> tests.txt
-
-        ./test 1 'lorem ipsum' primer_besedilo.txt
-        cat out.txt >> tests.txt
 
     - name: Upload Tests Output
       uses: actions/upload-artifact@v4
