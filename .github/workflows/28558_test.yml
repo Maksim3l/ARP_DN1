@@ -3,11 +3,45 @@ name: C++ CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  check-tests:
     runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Check for Test Scripts
+      run: |
+        if [ ! -f ARP_DN1_PROG/ARP_DN1_PROG.cpp ]; then
+          echo "Test script not found!" > napaka.txt
+          exit 1
+        fi
+
+    - name: Upload Error Artifact
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: error-output
+        path: napaka.txt
+
+  run-tests:
+    needs: check-tests
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download Error Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: error-output
+        path: .
+
+    - name: Check for Errors
+      run: |
+        if [ -f napaka.txt ]; then
+          echo "Errors found in previous job. Exiting."
+          exit 1
+        fi
 
     - name: Set up GCC
       run: sudo apt-get install -y g++
