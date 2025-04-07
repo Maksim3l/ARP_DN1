@@ -33,9 +33,8 @@ jobs:
     - name: Check for Error Artifact
       id: check_artifact
       run: |
-        if curl -s -o /dev/null -w "%{http_code}" \
-          "${{ github.api_url }}/repos/${{ github.repository }}/actions/artifacts" | grep -q 200; then
-          echo "artifact_exists=true" >> $GITHUB_ENV
+        if curl -s -o /dev/null -w "%{http_code}" \ 
+        "${{ github.api_url }}/repos/${{ github.repository }}/actions/artifacts" | grep -q 200; then echo "artifact_exists=true" >> $GITHUB_ENV
         else
           echo "artifact_exists=false" >> $GITHUB_ENV
         fi
