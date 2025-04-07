@@ -13,7 +13,7 @@ jobs:
       run: sudo apt-get install -y g++
 
     - name: Build
-      run: g++ -o test Vaja2_KMP.cpp
+      run: g++ -o test ARP_DN1_PROG/ARP_DN1_PROG.cpp
 
     - name: Run Tests
       run: |
