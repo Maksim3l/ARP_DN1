@@ -9,6 +9,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN g++ -o my_app src/*.cpp -std=c++11
+RUN g++ -o my_app ARP_DN1_PROG/*.cpp -std=c++11
 
 CMD ["./my_app"]
