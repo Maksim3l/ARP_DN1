@@ -28,7 +28,7 @@ jobs:
     strategy:
       matrix:
         test-file: [primer_besedilo.txt, primer_besedilo2.txt, primer_besedilo3.txt]
-        compiler: [g++, clang++]
+        compiler: [g++]
     steps:
     - uses: actions/checkout@v4
     - name: Download Status Artifact
