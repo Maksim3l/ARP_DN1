@@ -10,14 +10,18 @@ jobs:
         if [ ! -f ARP_DN1_PROG/ARP_DN1_PROG.cpp ]; then
           echo "Test script not found!" > napaka.txt
           exit 1
+        else
+          echo "All required files found!" > status.txt
         fi
-    - name: Upload Error Artifact
-      if: failure()
+    - name: Upload Status Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: error-output
-        path: napaka.txt
-  
+        name: status-output
+        path: |
+          status.txt
+          napaka.txt
+        if-no-files-found: ignore
+
   run-tests:
     needs: check-tests
     runs-on: self-hosted
@@ -27,24 +31,15 @@ jobs:
         compiler: [g++, clang++]
     steps:
     - uses: actions/checkout@v4
-    - name: Check for Error Artifact
-      id: check_artifact
-      run: |
-        if curl -s -o /dev/null -w "%{http_code}" \
-        "${{ github.api_url }}/repos/${{ github.repository }}/actions/artifacts" | grep -q 200; then echo "artifact_exists=true" >> $GITHUB_ENV
-        else
-          echo "artifact_exists=false" >> $GITHUB_ENV
-        fi
-    - name: Download Error Artifact
-      if: env.artifact_exists == 'true'
+    - name: Download Status Artifact
       uses: actions/download-artifact@v4
       with:
-        name: error-output
-        path: .
+        name: status-output
+        path: ./status
     - name: Check for Errors
-      if: env.artifact_exists == 'true'
       run: |
-        if [ -f napaka.txt ]; then
+        if [ -f ./status/napaka.txt ]; then
+          cat ./status/napaka.txt
           echo "Errors found in previous job. Exiting."
           exit 1
         fi
