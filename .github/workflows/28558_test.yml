@@ -1,51 +1,46 @@
 name: Test
-
 on: [push, pull_request]
-
 jobs:
   check-tests:
     runs-on: self-hosted
-
     steps:
     - uses: actions/checkout@v4
-
     - name: Check for Test Scripts
       run: |
         if [ ! -f ARP_DN1_PROG/ARP_DN1_PROG.cpp ]; then
           echo "Test script not found!" > napaka.txt
           exit 1
         fi
-
     - name: Upload Error Artifact
       if: failure()
       uses: actions/upload-artifact@v4
       with:
         name: error-output
         path: napaka.txt
-
+  
   run-tests:
     needs: check-tests
     runs-on: self-hosted
-
+    strategy:
+      matrix:
+        test-file: [primer_besedilo.txt, primer_besedilo2.txt, primer_besedilo3.txt]
+        compiler: [g++, clang++]
     steps:
     - uses: actions/checkout@v4
-
     - name: Check for Error Artifact
       id: check_artifact
       run: |
-        if curl -s -o /dev/null -w "%{http_code}" \ 
+        if curl -s -o /dev/null -w "%{http_code}" \
         "${{ github.api_url }}/repos/${{ github.repository }}/actions/artifacts" | grep -q 200; then echo "artifact_exists=true" >> $GITHUB_ENV
         else
           echo "artifact_exists=false" >> $GITHUB_ENV
         fi
-
     - name: Download Error Artifact
       if: env.artifact_exists == 'true'
       uses: actions/download-artifact@v4
       with:
         name: error-output
         path: .
-
     - name: Check for Errors
       if: env.artifact_exists == 'true'
       run: |
@@ -53,22 +48,19 @@ jobs:
           echo "Errors found in previous job. Exiting."
           exit 1
         fi
-
-    - name: Set up GCC
-      run: sudo apt-get install -y g++
-
+    - name: Set up Compilers
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ clang
     - name: Build
-      run: g++ -o test ARP_DN1_PROG/ARP_DN1_PROG.cpp
-
+      run: ${{ matrix.compiler }} -o test ARP_DN1_PROG/ARP_DN1_PROG.cpp
     - name: Run Tests
       run: |
-        echo "Running tests and collecting outputs..."
-        ./test primer_besedilo.txt
-        cat out.txt >> tests.txt
-        echo "" >> tests.txt
-
+        echo "Running tests with ${{ matrix.compiler }} on ${{ matrix.test-file }}..."
+        ./test ${{ matrix.test-file }}
+        cat out.txt >> tests_${{ matrix.compiler }}_${{ matrix.test-file }}.txt
     - name: Upload Tests Output
       uses: actions/upload-artifact@v4
       with:
-        name: tests-output
-        path: tests.txt
+        name: tests-output-${{ matrix.compiler }}-${{ matrix.test-file }}
+        path: tests_${{ matrix.compiler }}_${{ matrix.test-file }}.txt
