@@ -13,6 +13,7 @@ jobs:
         else
           echo "All required files found!" > status.txt
         fi
+      # Gets the code onto the runner and looks for the .cpp program
     - name: Upload Status Artifact
       uses: actions/upload-artifact@v4
       with:
@@ -21,6 +22,7 @@ jobs:
           status.txt
           napaka.txt
         if-no-files-found: ignore
+      # Writes an error if there is no .cpp
 
   run-tests:
     needs: check-tests
@@ -29,6 +31,7 @@ jobs:
       matrix:
         test-file: [primer_besedilo.txt, primer_besedilo2.txt, primer_besedilo3.txt]
         compiler: [g++]
+      # Matrix for the different texts
     steps:
     - uses: actions/checkout@v4
     - name: Download Status Artifact
@@ -36,6 +39,7 @@ jobs:
       with:
         name: status-output
         path: ./status
+      # Checks if the file is there though artifact
     - name: Check for Errors
       run: |
         if [ -f ./status/napaka.txt ]; then
@@ -43,19 +47,24 @@ jobs:
           echo "Errors found in previous job. Exiting."
           exit 1
         fi
+      # Looks for any possible errors (file wasnt' there)  
     - name: Set up Compilers
       run: |
         sudo apt-get update
         sudo apt-get install -y g++ clang
+      # Set up the compiler for testing
     - name: Build
       run: ${{ matrix.compiler }} -o test ARP_DN1_PROG/ARP_DN1_PROG.cpp
+      # compile for each compiler (clang didn't work dusly has been excluded)
     - name: Run Tests
       run: |
         echo "Running tests with ${{ matrix.compiler }} on ${{ matrix.test-file }}..."
         ./test ${{ matrix.test-file }}
         cat out.txt >> tests_${{ matrix.compiler }}_${{ matrix.test-file }}.txt
+      # Run each of the tests off the matrix
     - name: Upload Tests Output
       uses: actions/upload-artifact@v4
       with:
         name: tests-output-${{ matrix.compiler }}-${{ matrix.test-file }}
         path: tests_${{ matrix.compiler }}_${{ matrix.test-file }}.txt
+      # Write out the test outputs
